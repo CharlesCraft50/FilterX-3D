@@ -1,0 +1,434 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #8b0000;
+}
+button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: #444;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 99999;
+    transition: background-color 0.3s ease;
+    transition: color 0.3s ease;
+}
+button:hover {
+    background-color: #1e1e1e;
+}
+.textarea-container {
+    position: absolute;
+    bottom: 60px;
+    /* left: 80%;
+    transform: translateX(-50%);
+    width: 20%; */
+    width: 80%;
+    display: flex;
+    align-items: center;
+    z-index: 99999;
+    opacity: 1;
+    transition: width 0.3s ease, opacity 0.3s ease;
+}
+
+.textarea-container.short {
+    left: 80%;
+    top: 60%;
+    transform: translateX(-50%);
+    width: 20%;
+}
+
+.subtitle {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 18px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 80%;
+    display: none;
+}
+
+textarea {
+    width: 100%;
+    height: 20px;
+    background-color: #222;
+    color: white;
+    border: 1px solid #555;
+    padding: 10px;
+    font-size: 16px;
+    resize: none;
+    outline: none;
+    border-radius: 5px;
+}
+textarea::placeholder {
+    color: #888;
+}
+.send-button {
+    position: relative;
+    margin-left: -50px;
+    margin-right: 10px;
+    margin-bottom: 40px;
+    background: #222;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0;
+}
+.send-button:hover {
+    color: white;
+}
+
+.mic-button {
+    position: relative;
+    margin-left: -60px;
+    margin-bottom: 40px;
+    background: #222;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0;
+}
+.mic-button:hover {
+    color: white;
+}
+
+.chat-button {
+    position: relative;
+    margin-left: -120px;
+    background: #222;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 24px;
+    display: none;
+}
+.chat-button:hover {
+    color: white;
+}
+
+input[type="range"] {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    z-index: 99999;
+}
+
+/* Fullscreen canvas for Three.js */
+#threeCanvas {
+    width: 100%;
+    height: calc(100vh - 50px);
+    max-height: 100vh;
+}
+
+@media screen and (max-width: 768px) {
+    #threeCanvas {
+        height: 60vh; /* Shrink canvas for mobile */
+    }
+}
+
+/* Loading percentage container */
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #204262;
+    font-size: 24px;
+    font-family: Arial, sans-serif;
+    z-index: 99999;
+}
+
+#loadingModel {
+    position: absolute;
+    top: 95%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #204262;
+    font-size: 24px;
+    font-family: Arial, sans-serif;
+    z-index: 99999;
+}
+
+/* Scrolling text container */
+.scrolling-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #204262;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 24px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Individual text block style */
+.scrolling-text span {
+    position: absolute;
+    animation: randomScroll 10s linear infinite;
+    white-space: nowrap;
+}
+
+@keyframes randomScroll {
+    0% {
+        transform: translateX(100%) translateY(calc(100vh * var(--randomY)));
+    }
+    100% {
+        transform: translateX(-100%) translateY(calc(100vh * var(--randomY)));
+    }
+}
+
+/* Chat messages container */
+#chatMessages {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: transparent;
+    /* border-left: 1px solid #444; */
+    color: white;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    z-index: 10;
+    transition: right 0.3s ease;
+    display: none;
+}
+
+#chatMessages.open {
+    right: -30%; /* Slide in */
+}
+
+/* Individual message style */
+#chatMessages .message {
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background-color: #333;
+    word-wrap: break-word;
+}
+
+#chatMessages .message.user {
+    background-color: #1a73e8;
+    color: white;
+    align-self: flex-end;
+}
+
+#chatMessages .message.bot {
+    background-color: #444;
+    color: #ddd;
+    align-self: flex-start;
+}
+
+.red-message {
+    background-color: #6e1717 !important;
+}
+
+.message {
+    transition: opacity 3s ease-in-out;
+}
+
+.message.fade-out {
+    opacity: 0;
+}
+
+/* Center the new large mic */
+.large-mic-container {
+    position: fixed;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden; 
+    opacity: 0;
+    transition: visibility 0s, opacity 0.2s ease-in-out;
+    z-index: 100; /* Keeps it on top of other elements */
+}
+
+.large-mic-container.show {
+    visibility: visible; 
+    opacity: 1;
+}
+
+/* Pulsating wave effect */
+.pulsating-circle {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(85, 85, 85, 0.5); /* Border color matching the mic but more transparent */
+    border-radius: 50%;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Actual mic button */
+.large-mic {
+    width: 40px;
+    height: 40px;
+    background-color: #222; /* Updated color */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    z-index: 1; /* Keeps the mic on top of the pulse */
+}
+
+.large-mic i {
+    font-size: 20px;
+    color: #fff;
+}
+
+.large-mic:active {
+    transform: scale(0.9);
+}
+
+/* Pulsing animation for the transparent circle */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .large-mic-container {
+        bottom: 8%; /* Closer to the bottom */
+    }
+
+    .pulsating-circle {
+        width: 100px;
+        height: 100px;
+        border-width: 3px;
+    }
+
+    .large-mic {
+        width: 70px;
+        height: 70px;
+    }
+
+    .large-mic i {
+        font-size: 45px;
+    }
+
+    #chatMessages {
+        width: 40%;
+        font-size: 12px;
+    }
+
+    .textarea-container {
+        width: 90%;
+        bottom: 50px;
+    }
+
+    textarea {
+        font-size: 14px;
+    }
+
+    .send-button, .mic-button, .chat-button {
+        font-size: 20px;
+    }
+
+    #loading, #loadingModel {
+        font-size: 18px;
+    }
+
+    .scrolling-text {
+        font-size: 18px;
+    }
+
+    #chatMessages.open {
+        right: -40%; /* Slide in */
+    }
+}
+
+@media (max-width: 480px) {
+    .large-mic-container {
+        bottom: 5%; /* Even closer to the bottom for better thumb access */
+    }
+
+    .pulsating-circle {
+        width: 80px;
+        height: 80px;
+        border-width: 3px;
+    }
+
+    .large-mic {
+        width: 60px;
+        height: 60px;
+    }
+
+    .large-mic i {
+        font-size: 40px;
+    }
+    
+    #chatMessages {
+        width: 60%;
+        font-size: 10px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    .textarea-container {
+        width: 95%;
+        bottom: 40px;
+        margin-left: -10px;
+    }
+
+    textarea {
+        font-size: 12px;
+    }
+
+    .send-button, .mic-button, .chat-button {
+        font-size: 18px;
+    }
+
+    #loading, #loadingModel {
+        font-size: 16px;
+    }
+
+    .scrolling-text {
+        font-size: 14px;
+    }
+
+    #chatMessages.open {
+        right: -60%; /* Slide in */
+    }
+}

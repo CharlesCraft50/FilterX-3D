@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilterX</title>
+    <link rel="icon" type="image/x-icon" href="images/fx.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="large-mic-container">
+        <div class="pulsating-circle"></div>
+        <div class="pulsating-circle" style="animation-delay: 0.75s;"></div>
+        
+        <div class="large-mic" id="largeMic">
+            <i class="fas fa-microphone"></i>
+        </div>
+    </div>
+
+    <audio id="intenseAudio" src="audios/intense.wav"></audio>
+
+    <!-- Loading Percentage -->
+    <div id="loadingModel" style="display: none;">Model is loading, please wait...</div>
+
+    <div id="loading">Loading... 0%</div>
+
+    <!-- 3D Canvas -->
+    <canvas id="threeCanvas"></canvas>
+
+    <!-- Chat Messages Container -->
+    <div id="chatMessages"></div>
+
+    <div id="botSubtitle" class="subtitle"></div>
+    <div id="userSubtitle" class="subtitle"></div>
+
+    <!-- Scrolling Text Overlay -->
+    <div class="scrolling-text" id="scrollingText"></div>
+
+    <button id="toggleAngry" style="display: none;">Toggle Angry Mode</button>
+    <div class="textarea-container">
+        <textarea id="textInput" placeholder="Say something..."></textarea>
+        <button class="send-button" id="sendButton">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+        <button class="mic-button" id="micButton">
+            <i class="fas fa-microphone"></i>
+        </button>
+        <button id="toggleMessages" class="chat-button">
+            <i class="fas fa-message"></i>
+        </button>
+    </div>
+    <input type="range" id="rotationSlider" min="-180" max="180" step="1" value="0" style="display: none;">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r110/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/imaya/zlib.js/bin/inflate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.110/examples/js/loaders/FBXLoader.js"></script>
+    <script src="js/local.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>
