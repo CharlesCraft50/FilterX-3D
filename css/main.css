@@ -43,6 +43,7 @@ button:hover {
     top: 60%;
     transform: translateX(-50%);
     width: 20%;
+    opacity: 0 !important;
 }
 
 .subtitle {

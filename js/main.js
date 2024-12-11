@@ -472,11 +472,28 @@ if ('webkitSpeechRecognition' in window) {
         }
     });
 
-    largeMic.addEventListener('click', () => {
+    largeMicContainer.addEventListener('click', () => {
         if(!disableMicButton) {
             showTextArea();
             recognition.stop();
         }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if(event.ctrlKey) {
+            if (isRecognizing) {
+                largeMicContainer.classList.remove('show');
+                hideTextArea();
+                recognition.stop(); // Stop the recognition
+            } else {
+                largeMicContainer.classList.add('show');
+                hideTextArea();
+                recognition.start(); // Start the recognition
+                disableMicButton = false;
+            }
+        }
+
+        
     });
 }
 
